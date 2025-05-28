@@ -1,47 +1,129 @@
-[![Open in Visual Studio Code](https://classroom.github.com/assets/open-in-vscode-2e0aaae1b6195c2367325f4f02e2d04e9abb55f0b24a779b69b11b9e10269abc.svg)](https://classroom.github.com/online_ide?assignment_repo_id=19645815&assignment_repo_type=AssignmentRepo)
-# MongoDB Fundamentals Assignment
+# PLP MongoDB Week 1 Assignment — Bookstore Project
 
-This assignment focuses on learning MongoDB fundamentals including setup, CRUD operations, advanced queries, aggregation pipelines, and indexing.
+This repository contains MongoDB scripts and data for the Week 1 assignment of the MERN Stack specialization at **Power Learn Project (PLP)**.
 
-## Assignment Overview
+## 👨‍💻 Author
 
-You will:
-1. Set up a MongoDB database
-2. Perform basic CRUD operations
-3. Write advanced queries with filtering, projection, and sorting
-4. Create aggregation pipelines for data analysis
-5. Implement indexing for performance optimization
+**Wayne Chibeu**  
+MERN Specialization Student  
+PLP Africa — 2025 Cohort  
 
-## Getting Started
+---
 
-1. Accept the GitHub Classroom assignment invitation
-2. Clone your personal repository that was created by GitHub Classroom
-3. Install MongoDB locally or set up a MongoDB Atlas account
-4. Run the provided `insert_books.js` script to populate your database
-5. Complete the tasks in the assignment document
+## 🗂 Project Structure
 
-## Files Included
+| File | Description |
+|------|-------------|
+| `insert_books.js` | Inserts 12 sample books into the `plp_bookstore` database. |
+| `aggregation.js`  | Contains aggregation pipeline queries (avg price, top author, etc.). |
+| `indexing.js`     | Demonstrates creation of indexes and explains their performance impact. |
+| `Week1-Assignment.md` | Instructions and checklist provided by the instructor. |
+| `README.md`       | This file — contains overview, usage, and explanations. |
 
-- `Week1-Assignment.md`: Detailed assignment instructions
-- `insert_books.js`: Script to populate your MongoDB database with sample book data
+---
 
-## Requirements
+## 📚 Database: `plp_bookstore`
 
-- Node.js (v18 or higher)
-- MongoDB (local installation or Atlas account)
-- MongoDB Shell (mongosh) or MongoDB Compass
+Each book has the following schema:
 
-## Submission
+```js
+{
+  title: String,
+  author: String,
+  genre: String,
+  published_year: Number,
+  price: Number,
+  in_stock: Boolean,
+  pages: Number,
+  publisher: String
+}
+```
 
-Your work will be automatically submitted when you push to your GitHub Classroom repository. Make sure to:
+---
 
-1. Complete all tasks in the assignment
-2. Add your `queries.js` file with all required MongoDB queries
-3. Include a screenshot of your MongoDB database
-4. Update the README.md with your specific setup instructions
+## ✅ Completed Tasks
 
-## Resources
+### 1. MongoDB Setup
 
-- [MongoDB Documentation](https://docs.mongodb.com/)
-- [MongoDB University](https://university.mongodb.com/)
-- [MongoDB Node.js Driver](https://mongodb.github.io/node-mongodb-native/) 
+- [x] Installed MongoDB locally
+- [x] Created `plp_bookstore` DB and `books` collection
+- [x] Inserted 12 sample documents via `insert_books.js`
+
+### 2. CRUD Operations
+
+- ✅ Performed `find`, `insertMany`, `updateOne`, `deleteOne` queries using `mongosh` and Compass
+
+### 3. Advanced Queries
+
+- ✅ Filtered books by `in_stock`, `published_year`
+- ✅ Sorted by `price`
+- ✅ Projected fields like `title`, `author`, `price`
+- ✅ Used `limit()` and `skip()` for pagination
+
+### 4. Aggregation Pipelines (`aggregation.js`)
+
+- ✅ Calculated average price per genre
+- ✅ Found most frequent author
+- ✅ Grouped books by decade
+
+### 5. Indexing (`indexing.js`)
+
+- ✅ Created indexes on `title` and compound indexes on `author` + `published_year`
+- ✅ Verified performance using `.explain("executionStats")` → saw `'stage': 'IXSCAN'` ✔️
+
+---
+
+## 🧪 Sample Queries (run in mongosh)
+
+```js
+// 1. Find all books by George Orwell
+db.books.find({ author: "George Orwell" })
+
+// 2. Books published after 1950 and in stock
+db.books.find({ in_stock: true, published_year: { $gt: 1950 } })
+
+// 3. Sort by price (ascending)
+db.books.find().sort({ price: 1 })
+
+// 4. Pagination - Page 1 (5 books)
+db.books.find().limit(5).skip(0)
+
+// 5. Average price per genre (aggregation)
+db.books.aggregate([
+  { $group: { _id: "$genre", avgPrice: { $avg: "$price" } } }
+])
+```
+
+---
+
+## 💡 Notes
+
+- No external libraries were used.
+- All scripts use native MongoDB driver and `mongosh`.
+- Code is kept modular and readable for review.
+
+---
+
+## ✅ Screenshot
+
+Below is a screenshot from MongoDB Compass showing the `books` collection and inserted sample data in the `plp_bookstore` database:
+
+![MongoDB Compass](./screenshots/books.png)
+
+---
+
+## 🏁 How to Run
+
+1. Ensure MongoDB is running locally.
+2. Run seeding script:
+   ```bash
+   node insert_books.js
+   ```
+3. Open `mongosh` or Compass to test your queries.
+4. Run:
+   ```bash
+   node aggregation.js
+   node indexing.js
+   ```
+
+---
